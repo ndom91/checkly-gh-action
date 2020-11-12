@@ -76,39 +76,36 @@ const main = async () => {
               message: JSON.stringify(checkJson, null, 2)
             })
 
-            // If successfully written, print and quit
+            // If successfully written, print output, subtract credit, etc.
             if (msgId) {
               core.info(`✅ Job enqueued - ${msgId}`)
               core.setOutput('result', '✅ Check Successfully Added')
+
+              const checklyApi2 =
+                'https://run.mocky.io/v3/622656a1-ae96-469a-b0d6-24d5eb7b4017'
+              fetch(checklyApi2, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'X-Api-Key': process.env.CHECKLY_API_KEY
+                },
+                body: JSON.stringify({
+                  user: data.identity.id,
+                  credits: 1
+                })
+              })
+                .then(res => res.json())
+                .then(res => {
+                  core.info(
+                    `✅ User ${res.identity.username} has ${res.credits.available} credits remaining`
+                  )
+                })
+
               rsmq.quit()
             } else {
               core.error('Error writing to Queue')
               core.setFailed('Error writing to Queue')
             }
-
-            // rsmq
-            //   .listQueues()
-            //   .then(async queues => {
-            //     if (!queues[0]) {
-            //       await rsmq.createQueue({ qname: 'checklyMac' })
-            //     }
-            //     const checkJson = yaml.safeLoad(checkYaml, 'utf8')
-            //     rsmq
-            //       .sendMessage({
-            //         qname: queues[0],
-            //         message: JSON.stringify(checkJson, null, 2)
-            //       })
-            //       .then(result => {
-            //         core.info(`✅ Job enqueued - ${result}`)
-            //         core.setOutput('result', '✅ Check Successfully Added')
-            //         rsmq.quit()
-            //       })
-            //       .catch(err => {
-            //         console.error(err)
-            //         core.setFailed(err)
-            //       })
-            //   })
-            //   .catch(err => console.log(err))
           }
         })
     })

@@ -68,10 +68,31 @@ const main = async () => {
               message: JSON.stringify(checkJson, null, 2)
             })
 
-            // If successfully written, print and quit
+            // If successfully written, print output, subtract credit, etc.
             if (msgId) {
               core.info(`✅ Job enqueued - ${msgId}`)
               core.setOutput('result', '✅ Check Successfully Added')
+
+              const checklyApi2 =
+                'https://run.mocky.io/v3/622656a1-ae96-469a-b0d6-24d5eb7b4017'
+              fetch(checklyApi2, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'X-Api-Key': process.env.CHECKLY_API_KEY
+                },
+                body: JSON.stringify({
+                  user: data.identity.id,
+                  credits: 1
+                })
+              })
+                .then(res => res.json())
+                .then(res => {
+                  core.info(
+                    `✅ User ${res.identity.username} has ${res.credits.available} credits remaining`
+                  )
+                })
+
               rsmq.quit()
             } else {
               core.error('Error writing to Queue')
