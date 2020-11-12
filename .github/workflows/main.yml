@@ -12,6 +12,9 @@ jobs:
         id: checkly
         env:
           CHECKLY_API_KEY: ${{ secrets.CHECKLY_API_KEY }}
+          REDIS_HOST: ${{ secrets.REDIS_HOST }}
+          REDIS_PORT: ${{ secrets.REDIS_PORT }}
+          REDIS_PW: ${{ secrets.REDIS_PW }}
         with:
           path: ./myCheck.yml
       - name: Test Result

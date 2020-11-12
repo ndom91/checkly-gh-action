@@ -19,7 +19,9 @@
   "license": "ISC",
   "dependencies": {
     "@actions/core": "^1.2.6",
+    "bullmq": "^1.10.0",
     "isomorphic-unfetch": "^3.1.0",
+    "js-yaml": "^3.14.0",
     "yaml-lint": "^1.2.4"
   },
   "devDependencies": {
@@ -29,9 +31,9 @@
     "prettier-standard": "^16.4.1",
     "standard": "^16.0.2"
   },
-	"husky": {
+  "husky": {
     "hooks": {
       "pre-commit": "npm run format && npm run build"
-		}
-	}
+    }
+  }
 }

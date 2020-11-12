@@ -2,8 +2,10 @@
 
 const core = require('@actions/core')
 const yamlLint = require('yaml-lint')
+const yaml = require('js-yaml')
 const fetch = require('isomorphic-unfetch')
 const { promises: fs } = require('fs')
+import { Queue } from 'bullmq'
 
 if (!process.env.CHECKLY_API_KEY) {
   core.setFailed('CHECKLY_API_KEY missing!')
@@ -12,11 +14,11 @@ if (!process.env.CHECKLY_API_KEY) {
 const main = async () => {
   const path = core.getInput('path')
   // Read specified Checks definition
-  const result = await fs.readFile(path, 'utf8')
+  const checkYaml = await fs.readFile(path, 'utf8')
 
   // Lint Yaml
   yamlLint
-    .lint(result)
+    .lint(checkYaml)
     .then(() => {
       // Valid Yaml
       core.info('✅ valid YAML')
@@ -32,11 +34,25 @@ const main = async () => {
         }
       })
         .then(res => res.json())
-        .then(data => {
+        .then(async data => {
+					// Check if User can even add Checks
           if (data.credits.available > 0) {
             core.info(
-              `✅ User ${data.identity.username} has ${data.credits.available} remaining`
+              `✅ User ${data.identity.username} has ${data.credits.available} credits remaining`
             )
+						// Create a new Queue
+						const macQueue = new Queue('macQueue', { connection: {
+							host: process.env.REDIS_HOST,
+							port: process.env.REDIS_PORT,
+							password: process.env.REDIS_PW
+						}});
+						if (core.isDebug()) {
+							core.info('✅ Redis Connected')
+						}
+
+						// Add Json to Queue
+						const checkJson = yaml.safeLoad(checkYaml, 'utf8');
+						const result = await queue.add('checkly:ndo', JSON.stringify(checkJson, null, 2));
           }
         })
       core.setOutput('result', result)
