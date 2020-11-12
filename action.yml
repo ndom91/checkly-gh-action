@@ -4,7 +4,7 @@ author: Nico Domino <yo@ndo.dev>
 
 branding:
   icon: zap
-	color: blue
+  color: blue
 inputs:
   path:
     description: 'File path'
