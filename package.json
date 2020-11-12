@@ -19,6 +19,7 @@
   "license": "ISC",
   "dependencies": {
     "@actions/core": "^1.2.6",
+    "isomorphic-unfetch": "^3.1.0",
     "yaml-lint": "^1.2.4"
   },
   "devDependencies": {
