@@ -7,7 +7,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Run Private Action
+      - name: Checkly Check Parser
         uses: ./
         id: checkly
         env:
@@ -17,5 +17,3 @@ jobs:
           REDIS_PW: ${{ secrets.REDIS_PW }}
         with:
           path: ./myCheck.yml
-      - name: Test Result
-        run: echo "Result - ${{ steps.checkly.outputs.result }}"

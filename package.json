@@ -9,7 +9,8 @@
     "format": "prettier-standard index.js && standard index.js",
     "build": "ncc build index.js",
     "version": "npm run build && git add dist",
-    "release": "np && git tag -f $npm_package_version && git push --tags -f"
+    "release": "np && git tag -f $npm_package_version && git push --tags -f",
+    "dev": "act --secret-file .env -w"
   },
   "keywords": [
     "Action",
@@ -19,9 +20,10 @@
   "license": "ISC",
   "dependencies": {
     "@actions/core": "^1.2.6",
-    "bullmq": "^1.10.0",
     "isomorphic-unfetch": "^3.1.0",
     "js-yaml": "^3.14.0",
+    "rsmq": "^0.12.2",
+    "rsmq-promise": "^1.0.4",
     "yaml-lint": "^1.2.4"
   },
   "devDependencies": {
