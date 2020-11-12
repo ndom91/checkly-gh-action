@@ -34,7 +34,9 @@ const main = async () => {
         .then(res => res.json())
         .then(data => {
           if (data.credits.available > 0) {
-            core.info('Credit check success')
+            core.info(
+              `✅ User ${data.identity.username} has ${data.credits.available} remaining`
+            )
           }
         })
       core.setOutput('result', result)
