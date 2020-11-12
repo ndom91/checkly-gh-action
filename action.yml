@@ -1,0 +1,17 @@
+name: 'Checkly Monitoring as Code Action'
+description: 'Parse and Create Runners based on config in this repository!'
+author: Nico Domino <yo@ndo.dev>
+
+branding:
+  icon: zap
+	color: blue
+inputs:
+  path:
+    description: 'File path'
+    required: true
+outputs:
+  result:
+    description: 'Check Setup Result'
+runs:
+  using: 'node12'
+  main: 'dist/index.js'

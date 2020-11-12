@@ -1,0 +1,29 @@
+{
+  "name": "checkly-gh-action",
+  "private": true,
+  "version": "0.0.1",
+  "description": "Checkly Monitoring-as-Code Action",
+  "author": "Nico Domino <yo@ndo.dev>",
+  "main": "index.js",
+  "scripts": {
+    "test": "prettier-standard index.js && standard index.js",
+    "build": "ncc build index.js",
+    "version": "npm run build && git add dist",
+    "release": "np && git tag -f v1 && git push --tags -f"
+  },
+  "keywords": [
+    "Action",
+    "Github",
+    "Checkly"
+  ],
+  "license": "ISC",
+  "dependencies": {
+    "@actions/core": "^1.2.6"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.25.1",
+    "np": "^7.0.0",
+    "prettier-standard": "^16.4.1",
+    "standard": "^16.0.2"
+  }
+}
