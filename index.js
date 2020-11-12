@@ -1,9 +1,9 @@
 'use strict'
 
-import { Queue } from 'bullmq'
+const RSMQPromise = require('rsmq-promise')
+const yaml = require('js-yaml')
 const core = require('@actions/core')
 const yamlLint = require('yaml-lint')
-const yaml = require('js-yaml')
 const fetch = require('isomorphic-unfetch')
 const { promises: fs } = require('fs')
 
@@ -40,25 +40,43 @@ const main = async () => {
             core.info(
               `✅ User ${data.identity.username} has ${data.credits.available} credits remaining`
             )
-            // Create a new Queue
-            const macQueue = new Queue('macQueue', {
-              connection: {
-                host: process.env.REDIS_HOST,
-                port: process.env.REDIS_PORT,
-                password: process.env.REDIS_PW
-              }
+
+            // Create connection to Redis Queue
+            const rsmq = new RSMQPromise({
+              host: process.env.REDIS_HOST,
+              port: process.env.REDIS_PORT,
+              password: process.env.REDIS_PW,
+              realtime: true
             })
+
+            // Check if Queue already exists
+            let existingQueues = await rsmq.listQueues()
             if (core.isDebug()) {
-              core.info('✅ Redis Connected')
+              core.info(`✅ Queues - ${existingQueues}`)
             }
 
-            // Add Json to Queue
+            // If not, create queue
+            if (!Array.isArray(existingQueues) || !existingQueues.length) {
+              existingQueues = await rsmq.createQueue({ qname: 'checklyMac' })
+            }
+
+            // Convert to JSON for easier storing / transfering over the wire
             const checkJson = yaml.safeLoad(checkYaml, 'utf8')
-            const result = await macQueue.add(
-              'checkly:ndo',
-              JSON.stringify(checkJson, null, 2)
-            )
-            core.setOutput('result', result)
+            // Write msg to queue
+            const msgId = await rsmq.sendMessage({
+              qname: existingQueues[0],
+              message: JSON.stringify(checkJson, null, 2)
+            })
+
+            // If successfully written, print and quit
+            if (msgId) {
+              core.info(`✅ Job enqueued - ${msgId}`)
+              core.setOutput('result', '✅ Check Successfully Added')
+              rsmq.quit()
+            } else {
+              core.error('Error writing to Queue')
+              core.setFailed('Error writing to Queue')
+            }
           }
         })
     })
