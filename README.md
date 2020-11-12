@@ -1,10 +1,20 @@
-# ⌨️ Checkly Github Action
+<p align="center">
+<img src="https://blog.checklyhq.com/content/images/2019/03/logo_script_racoon_horizontal_795.png" />
+</p>
+<p align="center">
+<img src="https://img.shields.io/badge/version-0.1.0-blue" />  
+<img src="https://img.shields.io/badge/license-MIT-red" />
+<img src="https://img.shields.io/badge/uptime-100%25-green" />
+<img src="https://img.shields.io/badge/hire-nico-orange" />  
+</p>
+
+# Github Action
 
 Checkly Github Action for parsing and creating checks based on yaml definitions in your repository. An example check format can be found below.
 
 ## 🔩 Usage
 
-Simply add this Github Action to your Repo
+Simply add this Github Action to your Repo in `.github/workflow/main.yml`
 
 ```yaml
 steps:
@@ -18,6 +28,10 @@ steps:
 ```
 
 ## 🚀 Check Format
+
+At minimum, your repo should contain a yaml file defined in the `path` variable above.
+
+An example check definition looks like this:
 
 ```yaml
 checks:
@@ -65,7 +79,7 @@ checks:
           - sslExpiry
 ```
 
-If you have trouble with your yaml formatting, this [Yaml Linter](https://jsonformatter.org/yaml-validator) can help.
+If you have trouble with your yaml formatting, this [yaml Linter](https://jsonformatter.org/yaml-validator) can help.
 
 ## 🙏 Contributing
 
