@@ -1,0 +1,43 @@
+checks:
+  - name: check1
+    tags: 
+      - api
+      - check
+    request:
+      - type: http
+        method: POST
+        url: https://katalog.newtelco.dev/api
+        headers:
+          - content-type: application/json
+            body: >
+             {
+               "operationName": "ItemQuery",
+               "variables": {},
+               "query": "query ItemQuery {\n  items(orderBy: {date_added: desc}, first: 5) {\n    id\n    title\n    qty\n    description\n    type\n    date_added\n    updated_by\n    location {\n      description\n      __typename\n    }\n    status {\n      name\n      __typename\n    }\n    total\n    __typename\n  }\n  locations(first: 1) {\n    total\n    __typename\n  }\n}\n"
+             }
+    scripts:
+      - setup: setup_script1.js
+      - teardown: teardown_script1.js
+    response:
+      degrade: 5s
+      fail: 20s
+    assertions:
+      - source: header
+        property: X-Powered-By
+        comparison: equals
+        target: 'nginx'
+      - source: jsonBody
+        property: $.data.items
+        comparison: isNotEmpty
+        target: 
+    datacenter:
+      - virginia
+      - frankfurt
+    interval: 5min
+    alerts:
+      - type: email
+        sendOn:
+          - recover
+          - degrade
+          - fail
+          - sslExpiry

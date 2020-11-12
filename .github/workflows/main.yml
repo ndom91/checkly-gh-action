@@ -1,0 +1,16 @@
+on: [push]
+
+jobs:
+  checkly_mac:
+    runs-on: ubuntu-latest
+    name: Checkly Check
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Run Private Action
+        uses: ./
+        id: checkly
+        with:
+          path: ./myCheck.yml
+      - name: Test Result
+        run: echo "Result: ${{ steps.hello.outputs.result }}"
