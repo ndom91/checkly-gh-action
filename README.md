@@ -63,6 +63,8 @@ checks:
           - sslExpiry
 ```
 
+If you have trouble with your yaml formatting, this [Yaml Linter](https://jsonformatter.org/yaml-validator) can help.
+
 ## 🙏 Contributing
 
 All Contributions Welcome!
