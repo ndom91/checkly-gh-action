@@ -6,7 +6,7 @@
   "author": "Nico Domino <yo@ndo.dev>",
   "main": "index.js",
   "scripts": {
-    "format": "prettier-standard index.js && standard index.js",
+    "test": "prettier-standard index.js && standard index.js",
     "build": "ncc build index.js",
     "version": "npm run build && git add dist",
     "release": "np && git tag -f $npm_package_version && git push --tags -f",
@@ -35,7 +35,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run format && npm run build"
+      "pre-commit": "npm run test && npm run build"
     }
   }
 }
