@@ -13,4 +13,4 @@ jobs:
         with:
           path: ./myCheck.yml
       - name: Test Result
-        run: echo "Result - ${{ steps.hello.outputs.result }}"
+        run: echo "Result - ${{ steps.checkly.outputs.result }}"
