@@ -19,7 +19,7 @@ const main = async () => {
     .lint(result)
     .then(() => {
       // Valid Yaml
-      core.info('Yaml valid')
+      core.info('✅ valid YAML')
 
       // Mocked API Returning User Details + Credits Available
       const checklyApi =
@@ -42,7 +42,7 @@ const main = async () => {
     .catch(err => {
       // Invalid Yaml
       console.error(err)
-      core.setFailed(err)
+      core.setFailed('❌ Invalid YAML', err)
     })
 }
 
