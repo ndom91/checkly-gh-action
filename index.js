@@ -5,8 +5,8 @@ const { promises: fs } = require('fs')
 
 const main = async () => {
   const path = core.getInput('path')
-  const content = await fs.readFile(path, 'utf8')
-  core.setOutput('content', content)
+  const result = await fs.readFile(path, 'utf8')
+  core.setOutput('result', content)
 }
 
 main().catch(err => core.setFailed(err.message))
