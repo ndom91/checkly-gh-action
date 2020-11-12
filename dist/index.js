@@ -13,8 +13,8 @@ const { promises: fs } = __webpack_require__(747)
 
 const main = async () => {
   const path = core.getInput('path')
-  const content = await fs.readFile(path, 'utf8')
-  core.setOutput('content', content)
+  const result = await fs.readFile(path, 'utf8')
+  core.setOutput('result', result)
 }
 
 main().catch(err => core.setFailed(err.message))
