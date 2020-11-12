@@ -18,7 +18,8 @@
   ],
   "license": "ISC",
   "dependencies": {
-    "@actions/core": "^1.2.6"
+    "@actions/core": "^1.2.6",
+    "yaml-lint": "^1.2.4"
   },
   "devDependencies": {
     "@vercel/ncc": "^0.25.1",
