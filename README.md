@@ -11,6 +11,8 @@ steps:
   - name: Checkly
     id: checkly
     uses: ndom91/checkly-gh-action@v1
+		env:
+		  CHECKLY_API_KEY: ${{ secrets.CHECKLY_API_KEY }}
     with:
       path: ./mychecks.yml
 ```
