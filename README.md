@@ -14,22 +14,31 @@ Checkly Github Action for parsing and creating checks based on yaml definitions 
 
 ## 🔩 Usage
 
-Simply add this Github Action to your Repo in `.github/workflow/main.yml`
+Clone this repo and make sure you have a github action setup to run this private action (`uses: ./`). In the future this could be submitted to the marketplace and then simply defined by name (i.e. `uses: @ndom91/checkly-checker@v1`).
+
+Your Github workflow definition (`.github/workflow/main.yml`) should look something like this: 
 
 ```yaml
 steps:
+  - name: Checkout
+	  uses: action/checkout@v2
   - name: Checkly
     id: checkly
-    uses: ndom91/checkly-gh-action@v1
+    uses: ./
     env:
       CHECKLY_API_KEY: ${{ secrets.CHECKLY_API_KEY }}
+      REDIS_HOST: ${{ secrets.REDIS_HOST }}
+      REDIS_PORT: ${{ secrets.REDIS_PORT }}
+      REDIS_PW: ${{ secrets.REDIS_PW }}
     with:
       path: ./myCheck.yml
 ```
 
+This will then run your check, defined below, through some parsing and verification and then submit it to the queue for further processing by the worker [checkly-heroku-worker](https://github.com/ndom91/checkly-heroku-worker).
+
 ## 🚀 Check Format
 
-At minimum, your repo should contain a yaml file defined in the `path` variable above.
+At minimum, next to the code for the action (for now while its private), your repo should contain a yaml file defined in the `path` variable above.
 
 An example check definition looks like this:
 
