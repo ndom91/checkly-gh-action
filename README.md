@@ -38,7 +38,7 @@ This will then run your check, defined below, through some parsing and verificat
 
 ## 🚀 Check Format
 
-At minimum, next to the code for the action (for now while its private), your repo should contain a yaml file defined in the `path` variable above.
+At minimum, next to the code for the action (for now while its private), your repo should contain a yaml file which defines the check(s) you want Checkly to execute. This file must be included in the `path` variable from the Github Action workflow file above.
 
 An example check definition looks like this:
 
