@@ -21,7 +21,7 @@ Your Github workflow definition (`.github/workflow/main.yml`) should look someth
 ```yaml
 steps:
   - name: Checkout
-	  uses: action/checkout@v2
+    uses: action/checkout@v2
   - name: Checkly
     id: checkly
     uses: ./
